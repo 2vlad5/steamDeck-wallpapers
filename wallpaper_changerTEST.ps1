@@ -1,12 +1,12 @@
 # SetWallpaper.ps1
-# Скрипт для автоматической смены обоев по датам
+# Г‘ГЄГ°ГЁГЇГІ Г¤Г«Гї Г ГўГІГ®Г¬Г ГІГЁГ·ГҐГ±ГЄГ®Г© Г±Г¬ГҐГ­Г» Г®ГЎГ®ГҐГў ГЇГ® Г¤Г ГІГ Г¬
 
 $ScriptDir = $PSScriptRoot
 $BackgroundFile = "$ScriptDir\background.jpg"
 $RegKey = "HKCU:\Control Panel\Desktop"
 $WallpaperValue = "Wallpaper"
 
-# Список диапазонов дат и соответствующих обоев
+# Г‘ГЇГЁГ±Г®ГЄ Г¤ГЁГ ГЇГ Г§Г®Г­Г®Гў Г¤Г ГІ ГЁ Г±Г®Г®ГІГўГҐГІГ±ГІГўГіГѕГ№ГЁГµ Г®ГЎГ®ГҐГў
 $DateRanges = @(
     @{
         Start = [DateTime]"2025-12-25"
@@ -18,27 +18,27 @@ $DateRanges = @(
         End   = [DateTime]"2026-02-15"
         File  = "$ScriptDir\valentines.jpg"
     }
-    # Добавьте другие диапазоны по аналогии
+    # Г„Г®ГЎГ ГўГјГІГҐ Г¤Г°ГіГЈГЁГҐ Г¤ГЁГ ГЇГ Г§Г®Г­Г» ГЇГ® Г Г­Г Г«Г®ГЈГЁГЁ
 )
 
-# Получаем текущую дату
+# ГЏГ®Г«ГіГ·Г ГҐГ¬ ГІГҐГЄГіГ№ГіГѕ Г¤Г ГІГі
 $Today = Get-Date
 
-# Получаем текущий путь к обоинам из реестра
+# ГЏГ®Г«ГіГ·Г ГҐГ¬ ГІГҐГЄГіГ№ГЁГ© ГЇГіГІГј ГЄ Г®ГЎГ®ГЁГ­Г Г¬ ГЁГ§ Г°ГҐГҐГ±ГІГ°Г 
 $CurrentWallpaper = Get-ItemProperty -Path $RegKey -Name $WallpaperValue -ErrorAction SilentlyContinue | Select-Object -ExpandProperty $WallpaperValue
 
-# Функция: установить обои
+# Г”ГіГ­ГЄГ¶ГЁГї: ГіГ±ГІГ Г­Г®ГўГЁГІГј Г®ГЎГ®ГЁ
 function Set-Wallpaper($Path) {
     if (Test-Path $Path) {
         Set-ItemProperty -Path $RegKey -Name $WallpaperValue -Value $Path
         rundll32.exe user32.dll, UpdatePerUserSystemParameters
-        Write-Host "Обои установлены: $Path"
+        Write-Host "ГЋГЎГ®ГЁ ГіГ±ГІГ Г­Г®ГўГ«ГҐГ­Г»: $Path"
     } else {
-        Write-Host "Файл обоев не найден: $Path"
+        Write-Host "Г”Г Г©Г« Г®ГЎГ®ГҐГў Г­ГҐ Г­Г Г©Г¤ГҐГ­: $Path"
     }
 }
 
-# Проверяем, попадает ли сегодняшняя дата в какой-либо диапазон
+# ГЏГ°Г®ГўГҐГ°ГїГҐГ¬, ГЇГ®ГЇГ Г¤Г ГҐГІ Г«ГЁ Г±ГҐГЈГ®Г¤Г­ГїГёГ­ГїГї Г¤Г ГІГ  Гў ГЄГ ГЄГ®Г©-Г«ГЁГЎГ® Г¤ГЁГ ГЇГ Г§Г®Г­
 $TargetWallpaper = $null
 foreach ($range in $DateRanges) {
     if ($Today -ge $range.Start -and $Today -le $range.End) {
@@ -47,33 +47,33 @@ foreach ($range in $DateRanges) {
     }
 }
 
-# Если дата не попала ни в один диапазон — используем background.jpg
+# Г…Г±Г«ГЁ Г¤Г ГІГ  Г­ГҐ ГЇГ®ГЇГ Г«Г  Г­ГЁ Гў Г®Г¤ГЁГ­ Г¤ГЁГ ГЇГ Г§Г®Г­ вЂ” ГЁГ±ГЇГ®Г«ГјГ§ГіГҐГ¬ background.jpg
 if (-not $TargetWallpaper) {
     $TargetWallpaper = $BackgroundFile
 }
 
-# Проверяем, установлены ли сейчас нужные обои
+# ГЏГ°Г®ГўГҐГ°ГїГҐГ¬, ГіГ±ГІГ Г­Г®ГўГ«ГҐГ­Г» Г«ГЁ Г±ГҐГ©Г·Г Г± Г­ГіГ¦Г­Г»ГҐ Г®ГЎГ®ГЁ
 if ($CurrentWallpaper -eq $TargetWallpaper) {
-    Write-Host "Обои уже установлены корректно. Ничего не делаем."
+    Write-Host "ГЋГЎГ®ГЁ ГіГ¦ГҐ ГіГ±ГІГ Г­Г®ГўГ«ГҐГ­Г» ГЄГ®Г°Г°ГҐГЄГІГ­Г®. ГЌГЁГ·ГҐГЈГ® Г­ГҐ Г¤ГҐГ«Г ГҐГ¬."
     exit
 }
 
-# Если текущие обои не в списке разрешённых — удаляем скрипт и обои
+# Г…Г±Г«ГЁ ГІГҐГЄГіГ№ГЁГҐ Г®ГЎГ®ГЁ Г­ГҐ Гў Г±ГЇГЁГ±ГЄГҐ Г°Г Г§Г°ГҐГёВёГ­Г­Г»Гµ вЂ” ГіГ¤Г Г«ГїГҐГ¬ Г±ГЄГ°ГЁГЇГІ ГЁ Г®ГЎГ®ГЁ
 $AllowedFiles = $DateRanges | ForEach-Object { $_.File }
 $AllowedFiles += $BackgroundFile
 
 if ($CurrentWallpaper -and $CurrentWallpaper -notin $AllowedFiles) {
-    Write-Host "Текущие обои не разрешены. Удаляем скрипт и обои..."
+    Write-Host "Г’ГҐГЄГіГ№ГЁГҐ Г®ГЎГ®ГЁ Г­ГҐ Г°Г Г§Г°ГҐГёГҐГ­Г». Г“Г¤Г Г«ГїГҐГ¬ Г±ГЄГ°ГЁГЇГІ ГЁ Г®ГЎГ®ГЁ..."
 
-    # Удаляем все jpg/jpeg в папке скрипта
+    # Г“Г¤Г Г«ГїГҐГ¬ ГўГ±ГҐ jpg/jpeg Гў ГЇГ ГЇГЄГҐ Г±ГЄГ°ГЁГЇГІГ 
     Get-ChildItem $ScriptDir -Filter *.jpg -Recurse | Remove-Item -Force
     Get-ChildItem $ScriptDir -Filter *.jpeg -Recurse | Remove-Item -Force
 
-    # Удаляем сам скрипт
+    # Г“Г¤Г Г«ГїГҐГ¬ Г±Г Г¬ Г±ГЄГ°ГЁГЇГІ
     Remove-Item "$ScriptDir\SetWallpaper.ps1" -Force
 
     exit
 }
 
-# Устанавливаем новые обои
+# Г“Г±ГІГ Г­Г ГўГ«ГЁГўГ ГҐГ¬ Г­Г®ГўГ»ГҐ Г®ГЎГ®ГЁ
 Set-Wallpaper $TargetWallpaper
